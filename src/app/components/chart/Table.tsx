@@ -112,20 +112,17 @@ export default function SleepTrends() {
           </div>
         </div>
         <div className="relative overflow-x-auto mt-[18px] ml-[16px]">
-          {/* Scrollable content */}
           <div className="relative min-w-max flex flex-col gap-[10px]">
-            {/* Horizontal grid lines that match content width */}
             <div className="absolute top-0 left-0 h-full w-full pointer-events-none z-0">
               {[...Array(5)].map((_, index) => (
                 <div
                   key={index}
                   className="w-full border-t border-gray-200 absolute"
-                  style={{ top: `${(index * 214) / 4}px` }} 
+                  style={{ top: `${(index * 214) / 4}px` }}
                 />
               ))}
             </div>
 
-            {/* Bars */}
             <div className="flex gap-[20px] z-10">
               {dates.map((_, i) => (
                 <div
@@ -135,7 +132,6 @@ export default function SleepTrends() {
               ))}
             </div>
 
-            {/* Dates */}
             <div className="flex gap-[20px] mb-5 z-10">
               {dates.map((date, i) => (
                 <div key={i} className="text-center text-xs w-9 flex-shrink-0">
