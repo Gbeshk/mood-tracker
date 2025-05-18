@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="flex justify-between max-w-[1200px] w-full mx-auto mt-[40px]">
+      <div className="flex justify-between max-w-[1200px] w-full mx-auto max-ssm:mt-[16px] max-mmd:mt-[24px] mt-[40px]">
         <Image
           onClick={() => {
             window.location.reload();

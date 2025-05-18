@@ -2,7 +2,7 @@
 import Image from "next/image";
 import sleepIcon from "../../images/icon-sleep.svg";
 import { useEffect, useState } from "react";
-
+import moodIcon from "../../images/MoodIcon.svg";
 type DateEntry = {
   day: string;
   fullDate: Date;
@@ -127,8 +127,16 @@ export default function SleepTrends() {
               {dates.map((_, i) => (
                 <div
                   key={i}
-                  className="bg-[#FFC97C] rounded-3xl w-[36px] h-[270px] flex-shrink-0"
-                ></div>
+                  className="bg-[#FFC97C] rounded-3xl w-[36px] flex justify-center h-[270px] flex-shrink-0"
+                >
+                  <Image
+                    src={moodIcon}
+                    width={100}
+                    height={100}
+                    alt="moodIcon"
+                    className="w-[30px] h-[30px] mt-[4px] ml-[1px]"
+                  ></Image>
+                </div>
               ))}
             </div>
 
