@@ -1,8 +1,9 @@
-import Mood from "./components/mood";
+import SignUpClient from "./components/SignUpClient.tsx/SignUpClient";
+
 export default function Home() {
   return (
     <>
-      <Mood />
+      <SignUpClient />
     </>
   );
 }

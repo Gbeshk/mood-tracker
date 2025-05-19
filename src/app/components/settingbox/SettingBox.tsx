@@ -1,16 +1,36 @@
+"use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import settingIcon from "../../images/cog.svg";
 import logOutIcon from "../../images/Logout Icon.svg";
 import close from "../../images/close.svg";
+import { useRouter } from "next/navigation";
+import ProfilePic from "../../images/profileicon.svg";
 
 type SettingBoxProps = {
   settingsOpen: boolean;
 };
 export default function SettingBox({ settingsOpen }: SettingBoxProps) {
-  const [name, setName] = useState("giorgi");
-  const [email, setEmail] = useState("giorgi@gmail.com");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [editModal, setEditModal] = useState(false);
+  const router = useRouter();
+  const [changedName, setChangedName] = useState("");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const nameLocal = localStorage.getItem("name");
+    const emailLocal = localStorage.getItem("email");
+    if (nameLocal) {
+      setName(nameLocal);
+      setChangedName(nameLocal);
+    }
+    if (emailLocal) setEmail(emailLocal);
+    const savedImage = localStorage.getItem("profileImage");
+    if (savedImage) {
+      setProfileImage(savedImage);
+    }
+  }, []);
   return (
     <>
       {settingsOpen && (
@@ -42,7 +62,13 @@ export default function SettingBox({ settingsOpen }: SettingBoxProps) {
               Settings
             </p>
           </div>
-          <div className="mt-[8px] flex items-center gap-2">
+          <div
+            className="mt-[8px] flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              localStorage.setItem("loggedIn", "false");
+              router.push("/login");
+            }}
+          >
             <Image
               src={logOutIcon}
               width={100}
@@ -86,24 +112,73 @@ export default function SettingBox({ settingsOpen }: SettingBoxProps) {
               type="text"
               name=""
               id=""
-              defaultValue={"lisa"}
+              defaultValue={name}
+              onChange={(e) => {
+                setChangedName(e.target.value);
+              }}
               className="h-[49px] w-full rounded-2xl pl-[16px] border-2 border-black mt-[8px]"
             />
             <div className="flex  gap-4">
-              <div className="w-[64px] h-[64px] bg-black rounded-[50%] mt-[24px]"></div>
-              <div className="mt-[24px]">
-                <p className="text-[#21214D] font-reddit font-normal text-[18px] leading-[140%] tracking-[-0.3px]">
+              {profileImage ? (
+                <div
+                  className="w-[64px] h-[64px] rounded-[50%] mt-[24px] overflow-hidden"
+                  style={{
+                    backgroundImage: `url(${profileImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={ProfilePic}
+                  width={40}
+                  height={40}
+                  className="w-[64px] h-[64px] mt-[24px] rounded-[50%] bg-gray-200"
+                  alt="profile icon"
+                />
+              )}
+              <div>
+                <label className="text-[#21214D] font-[Reddit Sans] font-normal text-[18px] leading-[140%] tracking-[-0.3px] mt-[24px] block">
                   Upload Image
-                </p>
-                <p className="text-[#57577B] font-reddit font-normal text-[15px] leading-[140%] mt-[8px] tracking-[-0.3px] ">
+                </label>
+                <p className="text-[#57577B] mt-[4px] font-normal text-[15px] leading-[140%] tracking-[-0.3px]">
                   Max 250KB, PNG or JPEG
                 </p>
-                <button className=" cursor-pointer w-[91px] h-[38px] border-2 border-[#9393B7] rounded-xl mt-[16px]">
+                <input
+                  type="file"
+                  id="profileImageInput"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file && file.size <= 250 * 1024) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const base64 = reader.result as string;
+                        setProfileImage(base64);
+                        localStorage.setItem("profileImage", base64);
+                      };
+                      reader.readAsDataURL(file);
+                    } else {
+                      alert("File too large or invalid type. Max size: 250KB.");
+                    }
+                  }}
+                />
+                <label
+                  htmlFor="profileImageInput"
+                  className="mt-[8px] w-[91px] h-[38px] rounded-lg outline-none border-1 flex items-center justify-center border-[#9393B7] cursor-pointer  transition-colors"
+                >
                   Upload
-                </button>
+                </label>
               </div>
             </div>
-            <button className=" cursor-pointer w-full h-[60px] bg-[#4865DB] rounded-xl mt-[24px] text-white font-semibold text-[20px] leading-[140%] tracking-[0px] text-center font-['Reddit_Sans']">
+            <button
+              onClick={() => {
+                localStorage.setItem("name", changedName);
+                window.location.reload();
+              }}
+              className=" cursor-pointer w-full h-[60px] bg-[#4865DB] rounded-xl mt-[24px] text-white font-semibold text-[20px] leading-[140%] tracking-[0px] text-center font-['Reddit_Sans']"
+            >
               Save changes
             </button>
           </div>

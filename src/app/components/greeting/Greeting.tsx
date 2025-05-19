@@ -9,12 +9,16 @@ export default function Greeting({ setmodalOpen, modalPage }: GreetingProps) {
   const todayMoment = moment();
   const [buttonVisible, setButtonVisible] = useState(true);
   const formattedDate = todayMoment.format("dddd, MMMM Do, YYYY");
+  const [name, setName] = useState("");
   useEffect(() => {
     const mood = localStorage.getItem("mood");
     const feeling = localStorage.getItem("feeling");
     const sleep = localStorage.getItem("sleep");
     const note = localStorage.getItem("note");
-
+    const name = localStorage.getItem("name");
+    if (name) {
+      setName(name);
+    }
     if (mood && feeling && sleep && note) {
       setButtonVisible(false);
     } else {
@@ -25,7 +29,7 @@ export default function Greeting({ setmodalOpen, modalPage }: GreetingProps) {
     <>
       <div className="mt-[60px] flex flex-col items-center">
         <p className="font-bold text-[32px] leading-[1.4] tracking-[-0.3px] font-reddit text-center text-[#4865DB]">
-          Hello, Giorgi!
+          Hello, {name}!
         </p>
         <h1 className="font-reddit font-bold text-[52px] leading-[1.4] tracking-[-2px] text-center text-[#21214D]">
           How are you feeling today?

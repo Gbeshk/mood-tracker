@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import Header from "../components/Header/header";
 import Greeting from "../components/greeting/Greeting";
 import WhiteDivs from "../components/whitedivs/WhiteDivs";
@@ -11,7 +13,15 @@ export default function Mood() {
   const [modalOpen, setmodalOpen] = useState(false);
   const [modalPage, setModalPage] = useState(1);
   const [showInfo, setShowInfo] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
+    const loggedIn = localStorage.getItem("loggedIn");
+
+    if (loggedIn !== "true") {
+      router.push("/");
+      return;
+    }
     const mood = localStorage.getItem("mood");
     const feeling = localStorage.getItem("feeling");
     const sleep = localStorage.getItem("sleep");
