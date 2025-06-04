@@ -1,0 +1,11 @@
+@import "tailwindcss";
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f5f5ff, #e0e0ff);
+  padding: 20px;
+}
+
+@theme {
+  --breakpoint-mmd: 1230px;
+  --breakpoint-ssm: 530px;
+}
